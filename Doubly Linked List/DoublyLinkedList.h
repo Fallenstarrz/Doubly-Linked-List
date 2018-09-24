@@ -32,6 +32,12 @@ public:
 		previousNode = prev;
 	}
 
+	~Node()
+	{
+		nextNode = nullptr;
+		prevNode = nullptr;
+	}
+
 	// Methods
 	// Get data from the node
 	genericType getData()
