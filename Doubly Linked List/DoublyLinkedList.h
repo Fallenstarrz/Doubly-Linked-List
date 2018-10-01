@@ -103,6 +103,11 @@ public:
 		while (node1->data != dataToFind)
 		{
 			node1 = node1->getNext();
+
+			if (node1->data == tail)
+			{
+				break;
+			}
 		}
 		return node1;
 	}
