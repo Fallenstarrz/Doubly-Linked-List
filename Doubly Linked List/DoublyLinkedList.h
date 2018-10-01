@@ -35,7 +35,7 @@ public:
 	~Node()
 	{
 		nextNode = nullptr;
-		prevNode = nullptr;
+		previousNode = nullptr;
 	}
 
 	// Methods
@@ -98,7 +98,13 @@ public:
 	// Find data in list by looping through list and comparing the keys. Report to user if found (and where) or if not found.
 	genericType find(genericType dataToFind)
 	{
-
+		Node <genericType> node1;
+		node1 = head;
+		while (node1->data != dataToFind)
+		{
+			node1 = node1->getNext();
+		}
+		return node1;
 	}
 
 	// Insert node into the list by disconnecting previous from first node and next from sentinel node and hooking the new node up in its place
@@ -118,6 +124,8 @@ public:
 	{
 
 	}
+
+
 
 	// Extra Credit: Worry about these last
 	genericType findMinimum()
