@@ -12,8 +12,8 @@ class Node
 {
 private:
 	genericType data;
-	shared_ptr <Node> nextNode = nullptr;
-	shared_ptr <Node> previousNode = nullptr;
+	shared_ptr <Node<genericType>> nextNode = nullptr;
+	shared_ptr <Node<genericType>> previousNode = nullptr;
 
 public:
 	// Constructors
@@ -54,7 +54,7 @@ public:
 	// Get the node next in the list
 	shared_ptr<Node> getNext()
 	{
-		return nextNode;
+		return *nextNode;
 	}
 
 	// Set the node next in the list
@@ -66,7 +66,7 @@ public:
 	// Get the node previous to this node in the list
 	shared_ptr<Node> getPrev()
 	{
-		return previousNode;
+		return *previousNode;
 	}
 
 	// Set the node previous to this node in the list
@@ -83,15 +83,15 @@ template <typename genericType>
 class DoublyLinkedList
 {
 private:
-	shared_ptr<Node<genericType>> head = nullptr;
-	shared_ptr<Node<genericType>> tail = nullptr;
+	shared_ptr<Node<genericType>> head;
+	shared_ptr<Node<genericType>> tail;
 
 public:
 	// Constructor
 	DoublyLinkedList()
 	{
-		head = nullptr;
-		tail = nullptr;
+		head = NULL;
+		tail = NULL;
 	}
 
 	// Methods
@@ -115,7 +115,12 @@ public:
 	// Insert node into the list by disconnecting previous from first node and next from sentinel node and hooking the new node up in its place
 	void insertNode(genericType newData)
 	{
-
+		shared_ptr <Node<genericType>> nodeToInsert = new Node <genericType>;
+		nodeToInsert->setData(newData);
+		nodeToInsert->setPrev(head);
+		nodeToInsert->setNext(head->getNext());
+		nodeToInsert->getNext()->setPrev(nodeToInsert);
+		nodeToInsert->getPrev()->setNext(nodeToInsert);
 	}
 
 	// Delete a node by removing its previous and next pointers and assigning the old previous and next nodes to eachother
