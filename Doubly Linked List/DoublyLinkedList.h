@@ -106,6 +106,7 @@ public:
 	// Find data in list by looping through list and comparing the keys. Report to user if found (and where) or if not found.
 	shared_ptr<Node<genericType>> find(genericType dataToFind)
 	{
+		// TODO: Need to implement case: Data not present in list!
 		//shared_ptr <Node <genericType>> node1();
 		auto currentNode = head;
 		//node1 = head;
