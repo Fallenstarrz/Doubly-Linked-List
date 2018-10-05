@@ -104,46 +104,59 @@ public:
 
 	// Methods
 	// Find data in list by looping through list and comparing the keys. Report to user if found (and where) or if not found.
-	genericType find(genericType dataToFind)
+	shared_ptr<Node<genericType>> find(genericType dataToFind)
 	{
-		Node <genericType> node1;
-		node1 = head;
-		while (node1->data != dataToFind)
+		//shared_ptr <Node <genericType>> node1();
+		auto currentNode = head;
+		//node1 = head;
+		while (currentNode->getData() != dataToFind)
 		{
-			node1 = node1->getNext();
+			currentNode = currentNode->getNext();
 
-			if (node1->data == tail)
+			if (currentNode == tail)
 			{
-				break;
+				return NULL;
 			}
 		}
-		return node1;
+		return currentNode;
 	}
 
 	// Insert node into the list by disconnecting previous from first node and next from sentinel node and hooking the new node up in its place
 	void insertNode(genericType newData)
 	{
-		//shared_ptr <Node<genericType>> nodeToInsert = new Node <genericType>;
-		//shared_ptr <Node<genericType>> nodeToInsert = make_shared<new Node<genericType>>;
+		// Create a new node
 		//auto nodeToInsert = make_shared<Node<genericType>>();
 		shared_ptr <Node<genericType>> nodeToInsert = make_shared<Node<genericType>>();
+		// Set data to the passed in value
 		nodeToInsert->setData(newData);
+		// Set previous of new node to the previous of tail
 		nodeToInsert->setPrev(tail->getPrev());
+		// Set next of new node to tail
 		nodeToInsert->setNext(tail);
+		// Set previous of this node's next node to this node
 		nodeToInsert->getNext()->setPrev(nodeToInsert);
+		// Set next of this node's previous node to this node
 		nodeToInsert->getPrev()->setNext(nodeToInsert);
 	}
 
 	// Delete a node by removing its previous and next pointers and assigning the old previous and next nodes to eachother
 	void deleteNode(genericType dataToDelete)
 	{
-
+		// 1. Empty Linked-List
+		// 2. Removed node is head
+		// 3. Removed node is tail
+		// 4. Removed node is between head and tail
 	}
 
 	// Display all data in the list by looping through and printing all data to the console
 	void displayList()
 	{
-
+		auto node1 = head->getNext();
+		while (node1 != tail)
+		{
+			cout << node1->getData() << endl;
+			node1 = node1->getNext();
+		}
 	}
 
 
