@@ -13,7 +13,9 @@ class Node
 private:
 	genericType data;
 	shared_ptr <Node<genericType>> nextNode = nullptr;
+	//shared_ptr <Node> nextNode = nullptr;
 	shared_ptr <Node<genericType>> previousNode = nullptr;
+	//shared_ptr <Node> previousNode = nullptr;
 
 public:
 	// Constructors
@@ -54,7 +56,7 @@ public:
 	// Get the node next in the list
 	shared_ptr<Node> getNext()
 	{
-		return *nextNode;
+		return nextNode;
 	}
 
 	// Set the node next in the list
@@ -66,7 +68,7 @@ public:
 	// Get the node previous to this node in the list
 	shared_ptr<Node> getPrev()
 	{
-		return *previousNode;
+		return previousNode;
 	}
 
 	// Set the node previous to this node in the list
@@ -83,15 +85,21 @@ template <typename genericType>
 class DoublyLinkedList
 {
 private:
-	shared_ptr<Node<genericType>> head;
-	shared_ptr<Node<genericType>> tail;
+	shared_ptr<Node<genericType>> head = nullptr;
+	shared_ptr<Node<genericType>> tail = nullptr;
 
 public:
 	// Constructor
 	DoublyLinkedList()
 	{
-		head = NULL;
-		tail = NULL;
+		head = make_shared<Node<genericType>>();
+		head->setData(NULL);
+		head->setNext(tail);
+		head->setPrev(nullptr);
+		tail = make_shared<Node<genericType>>();
+		tail->setData(NULL);
+		tail->setNext(nullptr);
+		tail->setPrev(head);
 	}
 
 	// Methods
@@ -115,10 +123,13 @@ public:
 	// Insert node into the list by disconnecting previous from first node and next from sentinel node and hooking the new node up in its place
 	void insertNode(genericType newData)
 	{
-		shared_ptr <Node<genericType>> nodeToInsert = new Node <genericType>;
+		//shared_ptr <Node<genericType>> nodeToInsert = new Node <genericType>;
+		//shared_ptr <Node<genericType>> nodeToInsert = make_shared<new Node<genericType>>;
+		//auto nodeToInsert = make_shared<Node<genericType>>();
+		shared_ptr <Node<genericType>> nodeToInsert = make_shared<Node<genericType>>();
 		nodeToInsert->setData(newData);
-		nodeToInsert->setPrev(head);
-		nodeToInsert->setNext(head->getNext());
+		nodeToInsert->setPrev(tail->getPrev());
+		nodeToInsert->setNext(tail);
 		nodeToInsert->getNext()->setPrev(nodeToInsert);
 		nodeToInsert->getPrev()->setNext(nodeToInsert);
 	}
