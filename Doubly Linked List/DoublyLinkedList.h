@@ -33,9 +33,10 @@ public:
 		nextNode = next;
 		previousNode = prev;
 	}
-
+	// Deconstructors
 	~Node()
 	{
+		// On destruction of this node set next and previous nodes to null
 		nextNode = nullptr;
 		previousNode = nullptr;
 	}
@@ -92,10 +93,12 @@ public:
 	// Constructor
 	DoublyLinkedList()
 	{
+		// create head as shared pointer to a Node object and set its values
 		head = make_shared<Node<genericType>>();
 		head->setData(NULL);
 		head->setNext(tail);
 		head->setPrev(nullptr);
+		// create tail as shared pointer to a Node object and set its values
 		tail = make_shared<Node<genericType>>();
 		tail->setData(NULL);
 		tail->setNext(nullptr);
@@ -106,19 +109,17 @@ public:
 	// Find data in list by looping through list and comparing the keys. Report to user if found (and where) or if not found.
 	shared_ptr<Node<genericType>> find(genericType dataToFind)
 	{
-		// TODO: Need to implement case: Data not present in list!
-		//shared_ptr <Node <genericType>> node1();
 		auto currentNode = head;
-		//node1 = head;
 		while (currentNode->getData() != dataToFind)
 		{
 			currentNode = currentNode->getNext();
-
+			// If currentNode == tail then node wasn't found, so return nullptr
 			if (currentNode == tail)
 			{
-				return NULL;
+				return nullptr;
 			}
 		}
+		// return currentNode (smartpointer) when we leave the above loop because we found the data we were looking for
 		return currentNode;
 	}
 
@@ -143,32 +144,50 @@ public:
 	// Delete a node by removing its previous and next pointers and assigning the old previous and next nodes to eachother
 	void deleteNode(genericType dataToDelete)
 	{
+		auto nodeToDeletePtr = this->find(dataToDelete);
 		// 1. Empty Linked-List
+		if (nodeToDeletePtr == nullptr)
+		{
+			cout << "Error: Cannot Delete, Node Not Found" << endl;
+		}
 		// 2. Removed node is head
+		if (nodeToDeletePtr == head)
+		{
+			cout << "Error: Cannot Delete Head Sentinel Node" << endl;
+		}
 		// 3. Removed node is tail
+		else if (nodeToDeletePtr == tail)
+		{
+			cout << "Cannot Delete Tail Sentinel Node" << endl;
+		}
 		// 4. Removed node is between head and tail
+		else
+		{
+			auto nodeToDelete = *nodeToDeletePtr;
+			// set this nodes next's previous to this nodes previous
+			nodeToDelete.getNext()->setPrev(nodeToDelete.getPrev());
+			// set this nodes previous's next to this nodes next
+			nodeToDelete.getPrev()->setNext(nodeToDelete.getNext());
+			// set this node's next to a null ptr
+			nodeToDelete.setNext(nullptr);
+			// set this node's previous to a null ptr
+			nodeToDelete.setPrev(nullptr);
+			// Delete the pointers! 
+			nodeToDeletePtr.reset();
+		}
 	}
 
 	// Display all data in the list by looping through and printing all data to the console
 	void displayList()
 	{
 		auto node1 = head->getNext();
+		// Loop through all nodes in the current linkedList
 		while (node1 != tail)
 		{
+			// print the data
 			cout << node1->getData() << endl;
+			// set node1 to next node in list
 			node1 = node1->getNext();
 		}
-	}
-
-
-
-	// Extra Credit: Worry about these last
-	genericType findMinimum()
-	{
-
-	}
-	genericType findMaximum()
-	{
-
 	}
 };
